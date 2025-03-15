@@ -7,6 +7,7 @@ meta/OidRefCounter.h usr/include/sai
 meta/PortRelatedSet.h usr/include/sai
 meta/Notification*.h usr/include/sai
 meta/Globals.h usr/include/sai
+meta/sai_serialize_otn.h usr/include/sai
 SAI/meta/sai*.h usr/include/sai
 usr/lib/*/libsaimetadata.so
 usr/lib/*/libsaimeta.so

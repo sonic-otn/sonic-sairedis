@@ -5,6 +5,7 @@ extern "C" {
 }
 
 #include "meta/SaiInterface.h"
+#include "FlexCounterOtn.h"
 
 #include "swss/table.h"
 
