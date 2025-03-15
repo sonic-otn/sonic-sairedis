@@ -1416,6 +1416,8 @@ private:
     bool m_initalized = false;
 };
 
+FLEX_COUNTER_OTN_IMPLEMENT();
+
 FlexCounter::FlexCounter(
         _In_ const std::string& instanceId,
         _In_ std::shared_ptr<sairedis::SaiInterface> vendorSai,
@@ -1432,6 +1434,10 @@ FlexCounter::FlexCounter(
 
     m_enable = false;
     m_isDiscarded = false;
+
+    m_flexCounterOtn  = make_shared<FlexCounterOtn>(
+            std::bind(&FlexCounter::getCounterContext, this, std::placeholders::_1),
+            std::bind(&FlexCounter::hasCounterContext, this, std::placeholders::_1));
 
     startFlexCounterThread();
 }
@@ -1571,6 +1577,11 @@ void FlexCounter::addCounterPlugin(
             }
             else
             {
+                if (m_flexCounterOtn ->addCounterPlugin(field, shaStrings))
+                {
+                    continue;
+                }
+
                 SWSS_LOG_ERROR("Field is not supported %s", field.c_str());
             }
         }
@@ -1735,6 +1746,13 @@ std::shared_ptr<BaseCounterContext> FlexCounter::createCounterContext(
     else if (context_name == COUNTER_TYPE_POLICER)
     {
         return std::make_shared<CounterContext<sai_policer_stat_t>>(context_name, SAI_OBJECT_TYPE_POLICER, m_vendorSai.get(), m_statsMode);
+    }
+
+    // Create OTN counter context here
+    auto otn_context  = createOtnCounterContext(context_name, m_vendorSai, m_statsMode);
+    if (otn_context  != nullptr)
+    {
+        return otn_context;
     }
 
     SWSS_LOG_THROW("Invalid counter type %s", context_name.c_str());
@@ -2023,6 +2041,11 @@ void FlexCounter::removeCounter(
     }
     else
     {
+        if (m_flexCounterOtn->removeCounter(vid, objectType))
+        {
+            return;
+        }
+
         SWSS_LOG_ERROR("Object type for removal not supported, %s",
                 sai_serialize_object_type(objectType).c_str());
     }
@@ -2197,6 +2220,11 @@ void FlexCounter::addCounter(
         }
         else
         {
+            if (m_flexCounterOtn->addCounter(vid, rid, objectType, field, idStrings))
+            {
+                continue;
+            }
+
             SWSS_LOG_ERROR("Object type and field combination is not supported, object type %s, field %s",
                     sai_serialize_object_type(objectType).c_str(),
                     field.c_str());
