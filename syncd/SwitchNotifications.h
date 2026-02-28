@@ -134,6 +134,11 @@ namespace syncd
                           _In_ int context,
                           _In_ sai_object_id_t switch_id,
                           _In_ sai_switch_ipsec_post_status_t post_status );
+
+                    static void onOtnAlarmEvent(
+                            _In_ int context,
+                            _In_ uint32_t count,
+                            _In_ const sai_otn_alarm_event_data_t *data);
             protected:
 
                     SwitchNotifications* m_handler;
@@ -172,6 +177,7 @@ namespace syncd
                             .on_ha_set_event = &Slot<context>::onHaSetEvent,
                             .on_ha_scope_event = &Slot<context>::onHaScopeEvent,
                             .on_flow_bulk_get_session_event = &Slot<context>::onFlowBulkGetSessionEvent,
+                            .on_otn_alarm_event = &Slot<context>::onOtnAlarmEvent,
                             }) { }
 
                 virtual ~Slot() {}
@@ -355,6 +361,15 @@ namespace syncd
 
                     return SlotBase::onSwitchIpsecPostStatus(context, switch_id, post_status);
                 }
+
+                static void onOtnAlarmEvent(
+                        _In_ uint32_t count,
+                        _In_ const sai_otn_alarm_event_data_t *data)
+                {
+                    SWSS_LOG_ENTER();
+
+                    return SlotBase::onOtnAlarmEvent(context, count, data);
+                }
         };
 
             static std::vector<SwitchNotifications::SlotBase*> m_slots;
@@ -395,7 +410,9 @@ namespace syncd
             std::function<void(sai_object_id_t, const sai_ipsec_post_status_t)>                    onIpsecPostStatus;
             std::function<void(sai_object_id_t, const sai_switch_macsec_post_status_t)>            onSwitchMacsecPostStatus;
             std::function<void(sai_object_id_t, const sai_switch_ipsec_post_status_t)>             onSwitchIpsecPostStatus;
-    private:
+            std::function<void(uint32_t, const sai_otn_alarm_event_data_t*)>                        onOtnAlarmEvent;
+
+        private:
 
             SlotBase*m_slot;
     };

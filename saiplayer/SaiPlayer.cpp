@@ -96,6 +96,8 @@ SaiPlayer::SaiPlayer(
     m_sn.onFlowBulkGetSessionEvent = std::bind(&SaiPlayer::onFlowBulkGetSessionEvent, this, _1, _2, _3);
     m_sn.onPortHostTxReady = std::bind(&SaiPlayer::onPortHostTxReady, this, _1, _2, _3);
     m_sn.onIcmpEchoSessionStateChange = std::bind(&SaiPlayer::onIcmpEchoSessionStateChange, this, _1, _2);
+    m_sn.onOtnAlarmEvent = std::bind(&SaiPlayer::onOtnAlarmEvent, this, _1, _2);
+
     m_switchNotifications= m_sn.getSwitchNotifications();
 }
 
@@ -221,6 +223,15 @@ void SaiPlayer::onPortHostTxReady(
         _In_ sai_object_id_t switch_id,
         _In_ sai_object_id_t port_id,
         _In_ sai_port_host_tx_ready_status_t host_tx_ready_status)
+{
+    SWSS_LOG_ENTER();
+
+    // empty
+}
+
+void SaiPlayer::onOtnAlarmEvent(
+        _In_ uint32_t count,
+        _In_ const sai_otn_alarm_event_data_t *data)
 {
     SWSS_LOG_ENTER();
 

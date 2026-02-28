@@ -5,6 +5,7 @@
 #include "sairediscommon.h"
 
 #include "meta/sai_serialize.h"
+#include "meta/sai_serialize_otn.h"
 #include "meta/SaiAttributeList.h"
 
 #include "swss/logger.h"
@@ -679,6 +680,26 @@ void NotificationProcessor::process_on_twamp_session_event(
     sendNotification(SAI_SWITCH_NOTIFICATION_NAME_TWAMP_SESSION_EVENT, s);
 }
 
+void NotificationProcessor::process_on_otn_alarm_event(
+        _In_ uint32_t count,
+        _In_ sai_otn_alarm_event_data_t *data)
+{
+    SWSS_LOG_ENTER();
+
+    SWSS_LOG_DEBUG("otn alarm event notification count: %u", count);
+
+    for (uint32_t i = 0; i < count; i++)
+    {
+        sai_otn_alarm_event_data_t *otn_alarm_event = &data[i];
+
+        otn_alarm_event->object_id = m_translator->translateRidToVid(otn_alarm_event->object_id, SAI_NULL_OBJECT_ID);
+    }
+
+    std::string s = sai_serialize_otn_alarm_event_ntf(count, data);
+
+    sendNotification(SAI_SWITCH_NOTIFICATION_NAME_OTN_ALARM_EVENT, s);
+}
+
 void NotificationProcessor::handle_switch_state_change(
         _In_ const std::string &data)
 {
@@ -990,6 +1011,21 @@ void NotificationProcessor::handle_macsec_post_status(
                     sai_serialize_macsec_post_status(macsec_post_status));
 }
 
+void NotificationProcessor::handle_otn_alarm_event(
+        _In_ const std::string &data)
+{
+    SWSS_LOG_ENTER();
+
+    uint32_t count;
+    sai_otn_alarm_event_data_t *otn_alarm_event = NULL;
+
+    sai_deserialize_otn_alarm_event_ntf(data, count, &otn_alarm_event);
+
+    process_on_otn_alarm_event(count, otn_alarm_event);
+
+    sai_deserialize_free_otn_alarm_event_ntf(count, otn_alarm_event);
+}
+
 void NotificationProcessor::processNotification(
         _In_ const swss::KeyOpFieldsValuesTuple& item)
 {
@@ -1093,6 +1129,10 @@ void NotificationProcessor::syncProcessNotification(
     else if (notification == SAI_SWITCH_NOTIFICATION_NAME_FLOW_BULK_GET_SESSION_EVENT)
     {
         handle_flow_bulk_get_session_event(data);
+    }
+    else if (notification == SAI_SWITCH_NOTIFICATION_NAME_OTN_ALARM_EVENT)
+    {
+        handle_otn_alarm_event(data);
     }
     else
     {

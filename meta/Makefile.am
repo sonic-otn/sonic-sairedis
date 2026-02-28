@@ -45,6 +45,7 @@ libsaimeta_la_SOURCES = \
 				NotificationTamTelTypeConfigChange.cpp \
 				NotificationSwitchMacsecPostStatus.cpp \
 				NotificationMacsecPostStatus.cpp \
+				NotificationOtnAlarmEvent.cpp \
 				NumberOidIndexGenerator.cpp \
 				OidRefCounter.cpp \
 				PerformanceIntervalTimer.cpp \

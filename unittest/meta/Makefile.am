@@ -33,6 +33,7 @@ tests_SOURCES = \
 				TestNotificationTam.cpp \
                                 TestNotificationMacsecPostStatus.cpp \
                                 TestNotificationSwitchMacsecPostStatus.cpp \
+				TestNotificationOtnAlarmEvent.cpp \
 				TestOidRefCounter.cpp \
 				TestPerformanceIntervalTimer.cpp \
 				TestPortRelatedSet.cpp \

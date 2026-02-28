@@ -820,3 +820,8 @@ void sai_deserialize_macsec_post_status_ntf(
         _In_ const std::string& s,
         _Out_ sai_object_id_t& macsec_id,
         _Out_ sai_macsec_post_status_t& macsec_post_status);
+
+void sai_deserialize_hex_binary(
+        _In_ const std::string &s,
+        _Out_ void *buffer,
+        _In_ size_t length);

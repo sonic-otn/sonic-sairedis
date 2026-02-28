@@ -231,6 +231,16 @@ void SwitchNotifications::SlotBase::onSwitchIpsecPostStatus(
     return m_slots.at(context)->m_handler->onSwitchIpsecPostStatus(switch_id, post_status);
 }
 
+void SwitchNotifications::SlotBase::onOtnAlarmEvent(
+        _In_ int context,
+        _In_ uint32_t count,
+        _In_ const sai_otn_alarm_event_data_t *data)
+{
+    SWSS_LOG_ENTER();
+
+    return m_slots.at(context)->m_handler->onOtnAlarmEvent(count, data);
+}
+
 const sai_switch_notifications_t& SwitchNotifications::SlotBase::getSwitchNotifications() const
 {
     SWSS_LOG_ENTER();

@@ -6,6 +6,7 @@
 #include "swss/logger.h"
 
 #include "meta/sai_serialize.h"
+#include "meta/sai_serialize_otn.h"
 
 #include <inttypes.h>
 
@@ -327,6 +328,17 @@ void NotificationHandler::onMacsecPostStatus(
     std::string s = sai_serialize_macsec_post_status_ntf(macsec_id, macsec_post_status);
 
     enqueueNotification(SAI_SWITCH_NOTIFICATION_NAME_MACSEC_POST_STATUS, s);
+}
+
+void NotificationHandler::onOtnAlarmEvent(
+        _In_ uint32_t count,
+        _In_ const sai_otn_alarm_event_data_t *data)
+{
+    SWSS_LOG_ENTER();
+
+    std::string s = sai_serialize_otn_alarm_event_ntf(count, data);
+
+    enqueueNotification(SAI_SWITCH_NOTIFICATION_NAME_OTN_ALARM_EVENT, s);
 }
 
 void NotificationHandler::enqueueNotification(

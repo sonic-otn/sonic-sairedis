@@ -172,6 +172,10 @@ namespace saiproxy
             void onTamTelTypeConfigChange(
                     _In_ sai_object_id_t tam_tel_id);
 
+            void onOtnAlarmEvent(
+                    _In_ uint32_t count,
+                    _In_ const sai_otn_alarm_event_data_t *data);
+
             void sendNotification(
                     _In_ const std::string& op,
                     _In_ const std::string& data);

@@ -6,6 +6,7 @@
 
 #include "meta/SaiAttributeList.h"
 #include "meta/sai_serialize.h"
+#include "meta/sai_serialize_otn.h"
 #include "meta/ZeroMQSelectableChannel.h"
 
 #include "syncd/ZeroMQNotificationProducer.h"
@@ -1295,4 +1296,15 @@ uint64_t Proxy::getNotificationsSentCount() const
     SWSS_LOG_ENTER();
 
     return m_notificationsSentCount;
+}
+
+void Proxy::onOtnAlarmEvent(
+        _In_ uint32_t count,
+        _In_ const sai_otn_alarm_event_data_t *data)
+{
+    SWSS_LOG_ENTER();
+
+    std::string s = sai_serialize_otn_alarm_event_ntf(count, data);
+
+    sendNotification(SAI_SWITCH_NOTIFICATION_NAME_OTN_ALARM_EVENT, s);
 }
