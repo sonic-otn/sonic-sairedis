@@ -116,6 +116,10 @@ namespace syncd
                     _In_ sai_object_id_t macsec_id,
                     _In_ sai_macsec_post_status_t macsec_post_status);
 
+            void onOtnAlarmEvent(
+                    _In_ uint32_t count,
+                    _In_ const sai_otn_alarm_event_data_t *data);
+
         private:
 
             void enqueueNotification(

@@ -289,6 +289,10 @@ namespace saiplayer
                     _In_ sai_object_id_t port_id,
                     _In_ sai_port_host_tx_ready_status_t host_tx_ready_status);
 
+            void onOtnAlarmEvent(
+                    _In_ uint32_t count,
+                    _In_ const sai_otn_alarm_event_data_t *data);
+
         private:
 
             std::shared_ptr<sairedis::SaiInterface> m_sai;

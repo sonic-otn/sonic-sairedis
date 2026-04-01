@@ -185,6 +185,7 @@ Syncd::Syncd(
     m_sn.onHaSetEvent = std::bind(&NotificationHandler::onHaSetEvent, m_handler.get(), _1, _2);
     m_sn.onHaScopeEvent = std::bind(&NotificationHandler::onHaScopeEvent, m_handler.get(), _1, _2);
     m_sn.onFlowBulkGetSessionEvent = std::bind(&NotificationHandler::onFlowBulkGetSessionEvent, m_handler.get(), _1, _2, _3);
+    m_sn.onOtnAlarmEvent = std::bind(&NotificationHandler::onOtnAlarmEvent, m_handler.get(), _1, _2);
 
     m_handler->setSwitchNotifications(m_sn.getSwitchNotifications());
 

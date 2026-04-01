@@ -46,3 +46,17 @@ std::string sai_serialize_otn_osc_attr(
 void sai_deserialize_otn_osc_attr(
         _In_ const std::string& s,
         _Out_ sai_otn_osc_attr_t& attr);
+
+// OTN alarm event notification
+std::string sai_serialize_otn_alarm_event_ntf(
+        _In_ uint32_t count,
+        _In_ const sai_otn_alarm_event_data_t *otn_alarm_event);
+
+void sai_deserialize_otn_alarm_event_ntf(
+        _In_ const std::string& s,
+        _Out_ uint32_t& count,
+        _Out_ sai_otn_alarm_event_data_t** otn_alarm_event);
+
+void sai_deserialize_free_otn_alarm_event_ntf(
+        _In_ uint32_t count,
+        _In_ sai_otn_alarm_event_data_t* otn_alarm_event);

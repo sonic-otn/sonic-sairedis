@@ -251,6 +251,17 @@ void onTamTelTypeConfigChange(
     ntfCounter++;
 }
 
+static void onOtnAlarmEvent(
+        _In_ uint32_t count,
+        _In_ const sai_otn_alarm_event_data_t *data)
+{
+    SWSS_LOG_ENTER();
+
+    SWSS_LOG_NOTICE("received: onOtnAlarmEvent");
+
+    ntfCounter++;
+}
+
 TEST(DummySaiInterface, sendNotification)
 {
     DummySaiInterface sai;
@@ -278,6 +289,7 @@ TEST(DummySaiInterface, sendNotification)
     EXPECT_EQ(sai.enqueueNotificationToSend(SAI_SWITCH_ATTR_SHUTDOWN_REQUEST_NOTIFY), SAI_STATUS_SUCCESS);
 
     EXPECT_EQ(sai.enqueueNotificationToSend(SAI_SWITCH_ATTR_TAM_TEL_TYPE_CONFIG_CHANGE_NOTIFY), SAI_STATUS_SUCCESS);
+    EXPECT_EQ(sai.enqueueNotificationToSend(SAI_SWITCH_ATTR_OTN_ALARM_EVENT_NOTIFY), SAI_STATUS_SUCCESS);
 
     sai_attribute_t attr;
 
@@ -338,6 +350,10 @@ TEST(DummySaiInterface, sendNotification)
 
     attr.id = SAI_SWITCH_ATTR_TAM_TEL_TYPE_CONFIG_CHANGE_NOTIFY;
     attr.value.ptr = (void*)&onTamTelTypeConfigChange;
+    sai.set(SAI_OBJECT_TYPE_SWITCH, switch_id, &attr);
+
+    attr.id = SAI_SWITCH_ATTR_OTN_ALARM_EVENT_NOTIFY;
+    attr.value.ptr = (void*)&onOtnAlarmEvent;
     sai.set(SAI_OBJECT_TYPE_SWITCH, switch_id, &attr);
 
     EXPECT_EQ(sai.start(), SAI_STATUS_SUCCESS);

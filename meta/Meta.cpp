@@ -7597,3 +7597,67 @@ std::vector<std::string> Meta::getValidIcmpEchoSessionObjectTypes()
 
     return v;
 }
+
+void Meta::meta_sai_on_otn_alarm_event_single(
+        _In_ const sai_otn_alarm_event_data_t& data)
+{
+    SWSS_LOG_ENTER();
+
+    auto ot = objectTypeQuery(data.object_id);
+
+    bool valid = false;
+
+    switch ((int)ot)
+    {
+        // TODO hardcoded types, must advance SAI repository commit to get metadata for this
+        case SAI_OBJECT_TYPE_OTN_DEVICE:
+        case SAI_OBJECT_TYPE_OTN_ATTENUATOR:
+        case SAI_OBJECT_TYPE_OTN_OA:
+        case SAI_OBJECT_TYPE_OTN_OCM:
+        case SAI_OBJECT_TYPE_OTN_OCM_CHANNEL:
+        case SAI_OBJECT_TYPE_OTN_OSC:
+
+            valid = true;
+            break;
+
+        default:
+
+            SWSS_LOG_ERROR("data.object_id %s has unexpected type: %s, expected OTN_DEVICE",
+                    sai_serialize_object_id(data.object_id).c_str(),
+                    sai_serialize_object_type(ot).c_str());
+            break;
+    }
+
+    if (valid && !m_oids.objectReferenceExists(data.object_id))
+    {
+        SWSS_LOG_NOTICE("data.object_id new object spotted %s not present in local DB (snoop!)",
+                sai_serialize_object_id(data.object_id).c_str());
+
+        sai_object_meta_key_t key = { .objecttype = (sai_object_type_t)ot, .objectkey = { .key = { .object_id = data.object_id } } };
+
+        m_oids.objectReferenceInsert(data.object_id);
+
+        if (!m_saiObjectCollection.objectExists(key))
+        {
+            m_saiObjectCollection.createObject(key);
+        }
+    }
+}
+
+void Meta::meta_sai_on_otn_alarm_event(
+        _In_ uint32_t count,
+        _In_ const sai_otn_alarm_event_data_t *data)
+{
+    SWSS_LOG_ENTER();
+
+    if (count && data == NULL)
+    {
+        SWSS_LOG_ERROR("sai_otn_alarm_event_notification_data_t pointer is NULL but count is %u", count);
+        return;
+    }
+
+    for (uint32_t i = 0; i < count; ++i)
+    {
+        meta_sai_on_otn_alarm_event_single(data[i]);
+    }
+}

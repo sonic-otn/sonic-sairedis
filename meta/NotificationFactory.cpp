@@ -16,6 +16,7 @@
 #include "NotificationFlowBulkGetSessionEvent.h"
 #include "NotificationSwitchMacsecPostStatus.h"
 #include "NotificationMacsecPostStatus.h"
+#include "NotificationOtnAlarmEvent.h"
 #include "sairediscommon.h"
 
 #include "swss/logger.h"
@@ -78,6 +79,9 @@ std::shared_ptr<Notification> NotificationFactory::deserialize(
 
     if (name == SAI_SWITCH_NOTIFICATION_NAME_MACSEC_POST_STATUS)
         return std::make_shared<NotificationMacsecPostStatus>(serializedNotification);
+
+    if (name == SAI_SWITCH_NOTIFICATION_NAME_OTN_ALARM_EVENT)
+        return std::make_shared<NotificationOtnAlarmEvent>(serializedNotification);
 
     SWSS_LOG_THROW("unknown notification: '%s', FIXME", name.c_str());
 }

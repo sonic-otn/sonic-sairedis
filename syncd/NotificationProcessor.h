@@ -125,6 +125,10 @@ namespace syncd
                     _In_ uint32_t count,
                     _In_ sai_twamp_session_event_notification_data_t *data);
 
+            void process_on_otn_alarm_event(
+                    _In_ uint32_t count,
+                    _In_ sai_otn_alarm_event_data_t *data);
+
         private: // handlers
 
             void handle_switch_state_change(
@@ -178,6 +182,9 @@ namespace syncd
 
             void handle_macsec_post_status(
                    _In_ const std::string &data);
+
+            void handle_otn_alarm_event(
+                    _In_ const std::string &data);
 
             void processNotification(
                     _In_ const swss::KeyOpFieldsValuesTuple& item);

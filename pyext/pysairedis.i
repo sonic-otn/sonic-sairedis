@@ -84,6 +84,8 @@ sai_ip_prefix_t* sai_ip_prefix_t_from_string(const std::string& s);
 %pointer_functions(sai_port_oper_status_notification_t, sai_port_oper_status_notification_t_p);
 %array_functions(sai_queue_deadlock_notification_data_t, sai_queue_deadlock_notification_data_t_arr);
 %pointer_functions(sai_queue_deadlock_notification_data_t, sai_queue_deadlock_notification_data_t_p);
+%array_functions(sai_otn_alarm_event_data_t, sai_otn_alarm_event_data_t_arr);
+%pointer_functions(sai_otn_alarm_event_data_t, sai_otn_alarm_event_data_t_p);
 
 %{
 PyObject *py_convert_sai_fdb_event_notification_data_t_to_PyObject(const sai_fdb_event_notification_data_t*ntf)
@@ -102,6 +104,8 @@ PyObject *py_convert_sai_port_oper_status_notification_t_to_PyObject(const sai_p
 { return SWIG_NewPointerObj((void*)ntf, SWIGTYPE_p__sai_port_oper_status_notification_t, 0 | 0); }
 PyObject *py_convert_sai_queue_deadlock_notification_data_t_to_PyObject(const sai_queue_deadlock_notification_data_t*ntf)
 { return SWIG_NewPointerObj((void*)ntf, SWIGTYPE_p__sai_queue_deadlock_notification_data_t, 0 | 0); }
+PyObject *py_convert_sai_otn_alarm_event_data_t_to_PyObject(const sai_otn_alarm_event_data_t*ntf)
+{ return SWIG_NewPointerObj((void*)ntf, SWIGTYPE_p__sai_otn_alarm_event_data_t, 0 | 0); }
 %}
 
 

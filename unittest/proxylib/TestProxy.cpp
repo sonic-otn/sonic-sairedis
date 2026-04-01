@@ -229,6 +229,17 @@ static void onTamTelTypeConfigChange(
     ntfCounter++;
 }
 
+static void onOtnAlarmEvent(
+        _In_ uint32_t count,
+        _In_ const sai_otn_alarm_event_data_t *data)
+{
+    SWSS_LOG_ENTER();
+
+    SWSS_LOG_NOTICE("received: onOtnAlarmEvent");
+
+    ntfCounter++;
+}
+
 TEST(Proxy, notifications)
 {
     Sai sai;
@@ -251,6 +262,7 @@ TEST(Proxy, notifications)
     EXPECT_EQ(dummy->enqueueNotificationToSend(SAI_SWITCH_ATTR_ICMP_ECHO_SESSION_STATE_CHANGE_NOTIFY), SAI_STATUS_SUCCESS);
     EXPECT_EQ(dummy->enqueueNotificationToSend(SAI_SWITCH_ATTR_TWAMP_SESSION_EVENT_NOTIFY), SAI_STATUS_SUCCESS);
     EXPECT_EQ(dummy->enqueueNotificationToSend(SAI_SWITCH_ATTR_TAM_TEL_TYPE_CONFIG_CHANGE_NOTIFY), SAI_STATUS_SUCCESS);
+    EXPECT_EQ(dummy->enqueueNotificationToSend(SAI_SWITCH_ATTR_OTN_ALARM_EVENT_NOTIFY), SAI_STATUS_SUCCESS);
 
     auto thread = std::make_shared<std::thread>(fun,proxy);
 
@@ -334,6 +346,10 @@ TEST(Proxy, notifications)
     attr.value.ptr = (void*)&onTamTelTypeConfigChange;
     sai.set(SAI_OBJECT_TYPE_SWITCH, switch_id, &attr);
 
+    attr.id = SAI_SWITCH_ATTR_OTN_ALARM_EVENT_NOTIFY;
+    attr.value.ptr = (void*)&onOtnAlarmEvent;
+    sai.set(SAI_OBJECT_TYPE_SWITCH, switch_id, &attr);
+
     // dummy start sending notifications
     EXPECT_EQ(dummy->start(), SAI_STATUS_SUCCESS);
 
@@ -342,7 +358,7 @@ TEST(Proxy, notifications)
     // dummy stop sending notifications
     EXPECT_EQ(dummy->stop(), SAI_STATUS_SUCCESS);
 
-    EXPECT_EQ(proxy->getNotificationsSentCount(), 4+7+1);
+    EXPECT_EQ(proxy->getNotificationsSentCount(), 4+7+1+1);
 
     proxy->stop();
 
