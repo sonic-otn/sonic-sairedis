@@ -226,5 +226,7 @@ namespace syncd
             static const std::map<std::string, std::string> m_plugIn2CounterType;
 
             static const std::map<std::tuple<sai_object_type_t, std::string>, std::string> m_objectTypeField2CounterType;
+
+            std::shared_ptr<FlexCounterOtn> m_flexCounterOtn;
     };
 }

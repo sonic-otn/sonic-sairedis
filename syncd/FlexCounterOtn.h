@@ -53,28 +53,29 @@ namespace syncd
     #define FLEX_COUNTER_OTN_IMPLEMENT()                            \
     std::shared_ptr<BaseCounterContext> createOtnCounterContext(    \
             _In_ const std::string &context_name,                   \
+            _In_ const std::string &instance,                      \
             _In_ std::shared_ptr<sairedis::SaiInterface> vendorSai, \
-            _In_ sai_stats_mode_t statsMode)                        \
+            _In_ sai_stats_mode_t &statsMode)                       \
     {                                                               \
         SWSS_LOG_ENTER();                                           \
         if (context_name == FlexCounterOtn::COUNTER_TYPE_OTN_ATTENUATOR_ATTR)\
         {                                                           \
-            return std::make_shared<AttrContext<sai_otn_attenuator_attr_t>>(context_name, (sai_object_type_t)SAI_OBJECT_TYPE_OTN_ATTENUATOR, vendorSai.get(), statsMode);\
+            return std::make_shared<AttrContext<sai_otn_attenuator_attr_t>>(context_name, instance, (sai_object_type_t)SAI_OBJECT_TYPE_OTN_ATTENUATOR, vendorSai.get(), statsMode);\
         }                                                           \
                                                                     \
         if (context_name == FlexCounterOtn::COUNTER_TYPE_OTN_OA_ATTR)\
         {                                                           \
-            return std::make_shared<AttrContext<sai_otn_oa_attr_t>>(context_name, (sai_object_type_t)SAI_OBJECT_TYPE_OTN_OA, vendorSai.get(), statsMode);\
+            return std::make_shared<AttrContext<sai_otn_oa_attr_t>>(context_name, instance, (sai_object_type_t)SAI_OBJECT_TYPE_OTN_OA, vendorSai.get(), statsMode);\
         }                                                           \
                                                                     \
         if (context_name == FlexCounterOtn::COUNTER_TYPE_OTN_OCM_CHANNEL_ATTR)\
         {                                                           \
-            return std::make_shared<AttrContext<sai_otn_ocm_channel_attr_t>>(context_name, (sai_object_type_t)SAI_OBJECT_TYPE_OTN_OCM_CHANNEL, vendorSai.get(), statsMode);\
+            return std::make_shared<AttrContext<sai_otn_ocm_channel_attr_t>>(context_name, instance, (sai_object_type_t)SAI_OBJECT_TYPE_OTN_OCM_CHANNEL, vendorSai.get(), statsMode);\
         }                                                           \
                                                                     \
         if (context_name == FlexCounterOtn::COUNTER_TYPE_OTN_OSC_ATTR)\
         {                                                           \
-            return std::make_shared<AttrContext<sai_otn_osc_attr_t>>(context_name, (sai_object_type_t)SAI_OBJECT_TYPE_OTN_OSC, vendorSai.get(), statsMode);\
+            return std::make_shared<AttrContext<sai_otn_osc_attr_t>>(context_name, instance, (sai_object_type_t)SAI_OBJECT_TYPE_OTN_OSC, vendorSai.get(), statsMode);\
         }                                                           \
                                                                     \
         return nullptr;                                             \

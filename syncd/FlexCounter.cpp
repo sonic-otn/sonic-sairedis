@@ -3430,7 +3430,7 @@ std::shared_ptr<BaseCounterContext> FlexCounter::createCounterContext(
     }
 
     // Create OTN counter context here
-    auto otn_context  = createOtnCounterContext(context_name, m_vendorSai, m_statsMode);
+    auto otn_context  = createOtnCounterContext(context_name, instance, m_vendorSai, m_statsMode);
     if (otn_context  != nullptr)
     {
         return otn_context;
