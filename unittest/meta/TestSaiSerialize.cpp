@@ -2540,6 +2540,24 @@ TEST(SaiSerialize, sai_serialize_otn_oa_attr)
             "SAI_OTN_OA_ATTR_TARGET_GAIN");
 }
 
+TEST(SaiSerialize, sai_serialize_otn_ocm_attr)
+{
+    EXPECT_EQ(sai_serialize_otn_ocm_attr(SAI_OTN_OCM_ATTR_MONITOR_PORT),
+            "SAI_OTN_OCM_ATTR_MONITOR_PORT");
+}
+
+TEST(SaiSerialize, sai_serialize_otn_ocm_channel_attr)
+{
+    EXPECT_EQ(sai_serialize_otn_ocm_channel_attr(SAI_OTN_OCM_CHANNEL_ATTR_LOWER_FREQUENCY),
+            "SAI_OTN_OCM_CHANNEL_ATTR_LOWER_FREQUENCY");
+}
+
+TEST(SaiSerialize, sai_serialize_otn_osc_attr)
+{
+    EXPECT_EQ(sai_serialize_otn_osc_attr(SAI_OTN_OSC_ATTR_INPUT_POWER),
+            "SAI_OTN_OSC_ATTR_INPUT_POWER");
+}
+
 TEST(SaiSerialize, sai_deserialize_otn_attenuator_attr)
 {
     sai_otn_attenuator_attr_t attr;
@@ -2552,4 +2570,25 @@ TEST(SaiSerialize, sai_deserialize_otn_oa_attr)
     sai_otn_oa_attr_t attr;
     sai_deserialize_otn_oa_attr("SAI_OTN_OA_ATTR_TARGET_GAIN", attr);
     EXPECT_EQ(attr, SAI_OTN_OA_ATTR_TARGET_GAIN);
+}
+
+TEST(SaiSerialize, sai_deserialize_otn_ocm_attr)
+{
+    sai_otn_ocm_attr_t attr;
+    sai_deserialize_otn_ocm_attr("SAI_OTN_OCM_ATTR_MONITOR_PORT", attr);
+    EXPECT_EQ(attr, SAI_OTN_OCM_ATTR_MONITOR_PORT);
+}
+
+TEST(SaiSerialize, sai_deserialize_otn_ocm_channel_attr)
+{
+    sai_otn_ocm_channel_attr_t attr;
+    sai_deserialize_otn_ocm_channel_attr("SAI_OTN_OCM_CHANNEL_ATTR_LOWER_FREQUENCY", attr);
+    EXPECT_EQ(attr, SAI_OTN_OCM_CHANNEL_ATTR_LOWER_FREQUENCY);
+}
+
+TEST(SaiSerialize, sai_deserialize_otn_osc_attr)
+{
+    sai_otn_osc_attr_t attr;
+    sai_deserialize_otn_osc_attr("SAI_OTN_OSC_ATTR_INPUT_POWER", attr);
+    EXPECT_EQ(attr, SAI_OTN_OSC_ATTR_INPUT_POWER);
 }
